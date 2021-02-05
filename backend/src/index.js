@@ -1,7 +1,7 @@
 const express = require('express');
 const helmet = require('helmet');
 const db = require('../src/db/models');
-
+const bcrypt = require('bcrypt');
 const port = 4000;
 
 const app = express();
@@ -21,7 +21,7 @@ app.post('/register', async (req, res) => {
     let user = await db.User.create({
       name,
       email,
-      password,
+      password: await bcrypt.hash(password, 10),
     });
     res.json({ user });
   } catch (err) {
