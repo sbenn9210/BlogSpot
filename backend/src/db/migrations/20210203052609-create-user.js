@@ -17,9 +17,6 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
       },
-      readingListId: {
-        type: Sequelize.INTEGER,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

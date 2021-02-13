@@ -5,14 +5,13 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
    static associate({ReadingList}) {
-      //this.hasOne(ReadingList, {foreignKey:'readingListId'})
+      //this.hasOne(ReadingList, {foreignKey:'user_id'})
     }
   };
   User.init({
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     name: DataTypes.STRING,
-    readingListId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'User',
