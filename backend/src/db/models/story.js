@@ -3,7 +3,9 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Story extends Model {
     static associate({ ReadingList }) {
-      //this.belongsTo(ReadingList, { foreignKey: 'story_id' });
+     this.hasOne(ReadingList, { foreignKey: 'story_id'});
+     //hasOne will allow duplicates
+     //hasMany will NOT allow duplicates
     }
   }
   Story.init(

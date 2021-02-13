@@ -5,7 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
    static associate({ReadingList}) {
-      //this.hasOne(ReadingList, {foreignKey:'user_id'})
+      this.hasOne(ReadingList, {foreignKey:'user_id'})
     }
   };
   User.init({

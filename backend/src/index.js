@@ -2,6 +2,7 @@ const express = require('express');
 const helmet = require('helmet');
 const db = require('../src/db/models');
 const bcrypt = require('bcrypt');
+const user = require('./db/models/user');
 const port = 4000;
 
 const app = express();
@@ -53,6 +54,47 @@ app.post('/newstory', async (req, res) => {
       body,
     });
     res.json({ story });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// SAVE A BOOKMARKED STORY
+app.post('/bookmarks', async (req, res) => {
+  const { email } = req.body;
+  try {
+    let user = await db.User.findOne({ where: { email: email } });
+    if (user) {
+      db.ReadingList.create({ user_id: user.id, story_id: 5});
+    }
+    res.json({ user });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// GET BOOKMARKED STORY
+app.get('/bookmarks', async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    let user = await db.User.findOne({ where: { email: email } });
+    if (user) {
+      db.Story.findAll({
+        include: [
+          {
+            model: db.ReadingList,
+            where: { user_id: user.id },
+            required: true,
+            attributes: [] 
+          },
+        ],
+      }).then(stories => {
+        res.json(stories);
+      });
+    }
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
