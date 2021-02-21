@@ -4,8 +4,10 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-   static associate({ReadingList}) {
-      //this.hasOne(ReadingList, {foreignKey:'user_id'})
+    static associate(models) {
+      User.hasOne(models.ReadingList, {
+        foreignKey: "user_id",
+      });
     }
   };
   User.init({

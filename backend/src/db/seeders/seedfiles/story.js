@@ -1,6 +1,6 @@
 module.exports = [
   {
-    id: 1,
+    id: '7a09e457-2fbd-403d-8e3a-eb2f01ff99ae',
     author: 'Bezos',
     createdAt: '2021-02-06T18:54:46Z',
     updatedAt: '2021-02-06T18:54:46Z',
@@ -31,7 +31,7 @@ Amazon couldn’t be better positioned for the future. We are firing on all cyli
 Keep inventing, and don’t despair when at first the idea looks crazy. Remember to wander. Let curiosity be your compass. It remains Day 1.`,
   },
   {
-    id: 2,
+    id: 'eaebc998-72cd-445d-b94b-b21a57071c93',
     author: 'Bezos',
     createdAt: '2021-02-06T18:54:46Z',
     updatedAt: '2021-02-06T18:54:46Z',

@@ -4,9 +4,8 @@ module.exports = {
     await queryInterface.createTable('Stories', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
       },
       author: {
         type: Sequelize.STRING,
@@ -19,6 +18,10 @@ module.exports = {
       },
       image: {
         type: Sequelize.STRING,
+      },
+      published: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       body: {
         type: Sequelize.TEXT,

@@ -1,9 +1,12 @@
 'use strict';
 const { Model } = require('sequelize');
+const {v4: uuid} = require("uuid")
 module.exports = (sequelize, DataTypes) => {
   class Story extends Model {
-    static associate({ ReadingList }) {
-      //this.belongsTo(ReadingList, { foreignKey: 'story_id' });
+    static associate(models) {
+      Story.belongsTo(models.ReadingList, {
+        foreignKey: "id", targetKey:'story_id'
+      });
     }
   }
   Story.init(
@@ -12,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       title: DataTypes.STRING,
       description: DataTypes.TEXT,
       image: DataTypes.STRING,
+      published: DataTypes.BOOLEAN,
       body: DataTypes.TEXT,
     },
     {
@@ -19,5 +23,8 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'Story',
     }
   );
+  Story.beforeCreate((story, _) => {
+    return (story.id = uuid());
+  });
   return Story;
 };
