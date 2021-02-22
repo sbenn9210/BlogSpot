@@ -62,9 +62,7 @@ app.post('/publish', async (req, res) => {
   }
 });
 
-// @route     POST  /bookmarks
-// @desc      Bookmark a story
-// @access    Public
+
 // @route     POST  /bookmarks
 // @desc      Bookmark a story
 // @access    Public
