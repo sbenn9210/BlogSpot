@@ -1,22 +1,27 @@
 import './App.scss';
 import routes from './utils/routes';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import NavigationBar from './components/navigation/NavigationBar'
 
 const App = () => {
   return (
+    
     <Router>
-      <div className='container'>
+    <NavigationBar/>
+    <div>
         <Switch>
           {routes.map(route => (
             <Route
+              exact
               path={route.path}
               component={route.component}
               key={route.path}
             />
           ))}
         </Switch>
-      </div>
+       </div>
     </Router>
+
   );
 };
 export default App;
