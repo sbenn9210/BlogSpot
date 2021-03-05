@@ -29,13 +29,27 @@ app.post('/register', async (req, res) => {
   }
 });
 
-// @route     GET /
-// @desc      Get Stories
+// @route     GET /drafts
+// @desc      Get Drafts
 // @access    Public
-app.get('/', async (req, res) => {
+app.get('/drafts', async (req, res) => {
   try {
-    let stories = await db.Story.findAll();
-    res.json({ stories });
+    let drafts = await db.Story.findAll({where: { published: false}, order: [ ['createdAt',  'DESC'] ]})
+    res.json({ drafts });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+
+// @route     GET /published
+// @desc      Get Published
+// @access    Public
+app.get('/publishes', async (req, res) => {
+  try {
+    let publishes = await db.Story.findAll({where: { published: true}, order: [ ['createdAt',  'DESC'] ]});
+    res.json({ publishes });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -46,16 +60,21 @@ app.get('/', async (req, res) => {
 // @desc      Publish a story
 // @access    Public
 app.post('/publish', async (req, res) => {
-  const { author, title, description, image, body } = req.body;
+  const { author, title, description, image, body, published } = req.body;
   try {
+    if(title !== ''){
     let story = await db.Story.create({
       author,
       title,
       description,
       image,
       body,
+      published
     });
     res.json({ story });
+  } else {
+    res.json({msg: 'Please enter title'})
+  }
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

@@ -1,5 +1,5 @@
-import Home from '../pages/home/index';
-import Publish from '../pages/publish/index';
+import Home from '../components/pages/home/index';
+import Publish from '../components/pages/publish/index';
 
 const routes = [
   {
