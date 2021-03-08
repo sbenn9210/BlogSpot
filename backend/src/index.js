@@ -34,7 +34,10 @@ app.post('/register', async (req, res) => {
 // @access    Public
 app.get('/drafts', async (req, res) => {
   try {
-    let drafts = await db.Story.findAll({where: { published: false}, order: [ ['createdAt',  'DESC'] ]})
+    let drafts = await db.Story.findAll({
+      where: { published: false },
+      order: [['updatedAt', 'DESC']],
+    });
     res.json({ drafts });
   } catch (err) {
     console.error(err.message);
@@ -42,13 +45,15 @@ app.get('/drafts', async (req, res) => {
   }
 });
 
-
 // @route     GET /published
 // @desc      Get Published
 // @access    Public
 app.get('/publishes', async (req, res) => {
   try {
-    let publishes = await db.Story.findAll({where: { published: true}, order: [ ['createdAt',  'DESC'] ]});
+    let publishes = await db.Story.findAll({
+      where: { published: true },
+      order: [['updatedAt', 'DESC']],
+    });
     res.json({ publishes });
   } catch (err) {
     console.error(err.message);
@@ -62,25 +67,45 @@ app.get('/publishes', async (req, res) => {
 app.post('/publish', async (req, res) => {
   const { author, title, description, image, body, published } = req.body;
   try {
-    if(title !== ''){
-    let story = await db.Story.create({
-      author,
-      title,
-      description,
-      image,
-      body,
-      published
-    });
-    res.json({ story });
-  } else {
-    res.json({msg: 'Please enter title'})
-  }
+    if (title !== '') {
+      let story = await db.Story.create({
+        author,
+        title,
+        description,
+        image,
+        body,
+        published,
+      });
+      res.json({ story });
+    } else {
+      res.json({ msg: 'Please enter title' });
+    }
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
 });
 
+// @route     PUT  /publish
+// @desc      Update a story
+// @access    Public
+app.put('/publish', async (req, res) => {
+  const { id, author, title, description, image, body, published } = req.body;
+  try {
+    if (title !== '') {
+      let story = await db.Story.update(
+        { title: title, body: body, published: published },
+        { where: { id: id }, returning: true }
+      );
+      res.json({ story });
+    } else {
+      res.json({ msg: 'Please enter title' });
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 
 // @route     POST  /bookmarks
 // @desc      Bookmark a story

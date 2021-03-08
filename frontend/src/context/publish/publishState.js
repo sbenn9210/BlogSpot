@@ -2,12 +2,20 @@ import React, { useReducer } from 'react';
 import PublishContext from './publishContext';
 import publishReducer from './publishReducer';
 import axios from 'axios';
-import { GET_DRAFTS, GET_PUBLISHES, ADD_DRAFT, ADD_PUBLISH } from '../types';
+import {
+  GET_DRAFTS,
+  GET_PUBLISHES,
+  ADD_DRAFT,
+  ADD_PUBLISH,
+  SET_CURRENT,
+  CLEAR_CURRENT
+} from '../types';
 
 const PublishState = props => {
   const initialState = {
     drafts: [],
     publishes: [],
+    current: { title: '', body: '', id: '' },
   };
   const [state, dispatch] = useReducer(publishReducer, initialState);
 
@@ -41,16 +49,29 @@ const PublishState = props => {
     dispatch({ type: ADD_PUBLISH, payload: story });
   };
 
+  // Set Current Contact
+  const setCurrent = story => {
+    dispatch({ type: SET_CURRENT, payload: story });
+  };
+
+ // Clear Current Contact
+ const clearCurrent = () => {
+  dispatch({ type: CLEAR_CURRENT });
+};
+
   return (
     <PublishContext.Provider
       value={{
         drafts: state.drafts,
         publishes: state.publishes,
         story: state.story,
+        current: state.current,
         getDrafts,
         getPublishes,
         addDraft,
         addPublish,
+        setCurrent,
+        clearCurrent
       }}
     >
       {props.children}

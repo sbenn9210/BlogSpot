@@ -6,7 +6,14 @@ import PublishContext from '../../../context/publish/publishContext';
 
 const PublishForm = () => {
   const publishContext = useContext(PublishContext);
-  const { addDraft, addPublish } = publishContext;
+  const {
+    addDraft,
+    addPublish,
+    current,
+    clearCurrent,
+    getPublishes,
+    getDrafts,
+  } = publishContext;
   const { handleSubmit, register, setError, errors } = useForm();
 
   let buttonName = null;
@@ -18,21 +25,49 @@ const PublishForm = () => {
   const handleStory = async data => {
     try {
       if (buttonName === 'publishButton') {
-        data.published = true;
-        const res = await axios.post('/publish', data);
-        if (res.data.story) {
-          addPublish(res.data.story);
-        }
-        if (res.data.msg === 'Please enter title') {
-          setError('title', { type: 'server', message: res.data.msg });
+        if (current.id === '') {
+          data.published = true;
+          const res = await axios.post('/publish', data);
+          if (res.data.story) {
+            addPublish(res.data.story);
+          }
+          if (res.data.msg === 'Please enter title') {
+            setError('title', { type: 'server', message: res.data.msg });
+          }
+        } else {
+          data.id = current.id;
+          data.published = true;
+          const res = await axios.put('/publish', data);
+          if (res.data.story) {
+            getPublishes();
+            getDrafts();
+            clearCurrent();
+          }
+          if (res.data.msg === 'Please enter title') {
+            setError('title', { type: 'server', message: res.data.msg });
+          }
         }
       } else if (buttonName === 'saveButton') {
-        const res = await axios.post('/publish', data);
-        if (res.data.story) {
-          addDraft(res.data.story);
-        }
-        if (res.data.msg === 'Please enter title') {
-          setError('title', { type: 'server', message: res.data.msg });
+        if (current.id === '') {
+          const res = await axios.post('/publish', data);
+          if (res.data.story) {
+            addDraft(res.data.story);
+          }
+          if (res.data.msg === 'Please enter title') {
+            setError('title', { type: 'server', message: res.data.msg });
+          }
+        } else {
+          data.id = current.id;
+          data.published = false;
+          const res = await axios.put('/publish', data);
+          if (res.data.story) {
+            getPublishes();
+            getDrafts();
+            clearCurrent();
+          }
+          if (res.data.msg === 'Please enter title') {
+            setError('title', { type: 'server', message: res.data.msg });
+          }
         }
       }
     } catch (err) {
@@ -48,6 +83,7 @@ const PublishForm = () => {
           placeholder='Title Article Here'
           name='title'
           ref={register()}
+          defaultValue={current.title}
           className={`form-control ${errors.title ? 'is-invalid' : ''}`}
         />
         <Form.Control.Feedback type='invalid'>
@@ -62,6 +98,7 @@ const PublishForm = () => {
           placeholder='Write Your Story'
           name='body'
           ref={register()}
+          defaultValue={current.body}
         />
       </Form.Group>
       <Button

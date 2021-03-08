@@ -1,4 +1,4 @@
-import { GET_DRAFTS, GET_PUBLISHES, ADD_DRAFT, ADD_PUBLISH } from '../types';
+import { GET_DRAFTS, GET_PUBLISHES, ADD_DRAFT, ADD_PUBLISH, SET_CURRENT, CLEAR_CURRENT} from '../types';
 
 export default (state, action) => {
   switch (action.type) {
@@ -21,6 +21,16 @@ export default (state, action) => {
       return {
         ...state,
         publishes: [action.payload, ...state.drafts],
+      };
+      case SET_CURRENT:
+      return {
+        ...state,
+        current: action.payload,
+      };
+      case CLEAR_CURRENT:
+      return {
+        ...state,
+        current: {title:'', body:'', id:''}
       };
     default:
       return state;

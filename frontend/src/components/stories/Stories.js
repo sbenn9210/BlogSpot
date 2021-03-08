@@ -19,6 +19,8 @@ const Stories = () => {
       </h1>
     );
   }
+
+  
   return (
     <Fragment>
       <Tabs defaultActiveKey='drafts' id='controlled-tab-example'>
@@ -34,7 +36,7 @@ const Stories = () => {
                   <p className='clamp'>{draft.body}</p>
                 </Col>
                 <div className='d-flex justify-content-end  '>
-                  <Button className='edit'>EDIT ARTICLE →</Button>
+                  <Button className='edit' >EDIT ARTICLE →</Button>
                 </div>
               </Row>
               <h6>Last edited about {draft.updatedAt} • 1 min read</h6>
