@@ -32,6 +32,13 @@
   color: rgb(70, 143, 252);
   font-family: 'Arial Black';
 }
+
+.edit:focus {
+  background:none;
+  color: black;
+  outline:none!important
+}
+
 .title {
   display: flex;
   justify-content: space-between;
