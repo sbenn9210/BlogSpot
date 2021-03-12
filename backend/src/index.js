@@ -97,6 +97,7 @@ app.put('/publish', async (req, res) => {
         { title: title, body: body, published: published },
         { where: { id: id }, returning: true }
       );
+
       res.json({ story });
     } else {
       res.json({ msg: 'Please enter title' });

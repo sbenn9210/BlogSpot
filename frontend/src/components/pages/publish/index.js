@@ -2,12 +2,13 @@ import React, { Fragment, useState, useEffect, useContext } from 'react';
 import { Container, Row, Button, Col, Tabs, Card, Tab } from 'react-bootstrap';
 import MyVerticallyCenteredModal from '../../modal/index';
 import PublishContext from '../../../context/publish/publishContext';
+import timeSince from '../../../utils/time'
 import './publish.scss';
 
 const Publish = () => {
   const [modalShow, setModalShow] = useState(false);
   const publishContext = useContext(PublishContext);
-  const { drafts, publishes, getDrafts, getPublishes, setCurrent, clearCurrent, current} = publishContext;
+  const { drafts, publishes, getDrafts, getPublishes, setCurrent, clearCurrent} = publishContext;
 
   useEffect(() => {
     getDrafts();
@@ -73,7 +74,7 @@ const Publish = () => {
                       </Button>
                     </div>
                   </Row>
-                  <h6>Last edited about {draft.updatedAt} • 1 min read</h6>
+                  <h6>Last edited about {timeSince(new Date(draft.updatedAt).getTime())} ago • 1 min read</h6>
                   <hr />
                 </Card>
               ))}
@@ -95,7 +96,7 @@ const Publish = () => {
                         <Button className='edit' onClick={() => {setCurrent(publish); setModalShow(true)}}>EDIT ARTICLE →</Button>
                       </div>
                     </Row>
-                    <h6>Last edited about {publish.updatedAt} • 1 min read</h6>
+                    <h6>Last edited about {timeSince(new Date(publish.updatedAt).getTime())} ago • 1 min read</h6>
                     <hr />
                   </Card>
                 ))}
